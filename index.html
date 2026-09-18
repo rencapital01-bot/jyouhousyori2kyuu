@@ -1,0 +1,999 @@
+<title>きらめき情報処理帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#fff6f9;
+  --bg-2:#ffeef5;
+  --surface:#ffffff;
+  --surface-2:#fff0f6;
+  --border:#ffd9e6;
+  --ink:#4a2c3a;
+  --ink-soft:#8a5c72;
+  --muted:#b58aa0;
+  --primary:#ff6f9c;
+  --primary-deep:#e0447a;
+  --primary-ink:#ffffff;
+  --accent:#a879e8;
+  --accent-2:#ffc95c;
+  --good:#39b787;
+  --good-bg:#e3f8ef;
+  --bad:#ef7a7a;
+  --bad-bg:#fdeaea;
+  --bad-ink:#d9556f;
+  --shadow: 0 10px 28px -12px rgba(224,68,122,.28);
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#241220;
+    --bg-2:#2c1526;
+    --surface:#33172c;
+    --surface-2:#3b1a32;
+    --border:#54263f;
+    --ink:#ffeaf3;
+    --ink-soft:#e6b8cf;
+    --muted:#b98aa5;
+    --primary:#ff8fb3;
+    --primary-deep:#ffb0c9;
+    --primary-ink:#3a1023;
+    --accent:#c9a6ff;
+    --accent-2:#ffd37a;
+    --good:#5fd6a8;
+    --good-bg:#123829;
+    --bad:#ff9b9b;
+    --bad-bg:#3a1717;
+    --bad-ink:#ff9b9b;
+    --shadow: 0 10px 28px -12px rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#241220;
+  --bg-2:#2c1526;
+  --surface:#33172c;
+  --surface-2:#3b1a32;
+  --border:#54263f;
+  --ink:#ffeaf3;
+  --ink-soft:#e6b8cf;
+  --muted:#b98aa5;
+  --primary:#ff8fb3;
+  --primary-deep:#ffb0c9;
+  --primary-ink:#3a1023;
+  --accent:#c9a6ff;
+  --accent-2:#ffd37a;
+  --good:#5fd6a8;
+  --good-bg:#123829;
+  --bad:#ff9b9b;
+  --bad-bg:#3a1717;
+  --bad-ink:#ff9b9b;
+  --shadow: 0 10px 28px -12px rgba(0,0,0,.55);
+  color-scheme: dark;
+}
+*{box-sizing:border-box;}
+[hidden]{display:none!important;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 500px at 100% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+    radial-gradient(900px 500px at -10% 0%, color-mix(in srgb, var(--primary) 14%, transparent), transparent 55%),
+    var(--bg);
+  color:var(--ink);
+  font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-inline:16px;
+  padding-block:14px;
+  display:flex;
+  justify-content:center;
+}
+.app{
+  width:100%;
+  max-width:480px;
+  display:flex;
+  flex-direction:column;
+  min-height:calc(100% - 28px);
+  padding-bottom:78px;
+  position:relative;
+}
+h1,h2,h3{font-family:"Mochiy Pop One","Zen Maru Gothic",sans-serif;font-weight:400;text-wrap:balance;margin:0;}
+button{font-family:inherit;}
+::selection{background:color-mix(in srgb, var(--primary) 35%, transparent);}
+
+/* ---- top bar ---- */
+.topbar{
+  display:flex;align-items:center;gap:10px;
+  padding-block:6px 14px;
+}
+.topbar .back{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface);color:var(--primary-deep);font-size:18px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;
+}
+.topbar .back:focus-visible, button:focus-visible, .choice:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+.topbar .titles{flex:1;min-width:0;}
+.topbar .titles .eyebrow{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.topbar .titles h2{font-size:18px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar .emoji{font-size:24px;}
+
+/* ---- home ---- */
+.hero{
+  background:linear-gradient(155deg, var(--primary), var(--accent));
+  border-radius:var(--radius-lg);
+  padding:22px 20px;
+  color:#fff;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.hero::after{
+  content:"✨";position:absolute;right:14px;top:10px;font-size:22px;opacity:.85;
+}
+.hero .brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.hero .brand .mark{font-size:26px;}
+.hero .brand h1{font-size:20px;color:#fff;}
+.hero .brand p{margin:2px 0 0;font-size:12px;opacity:.9;}
+.hero-stats{display:flex;align-items:center;gap:16px;}
+.ring{
+  width:74px;height:74px;border-radius:50%;flex:none;
+  background: conic-gradient(#fff var(--pct, 0%), rgba(255,255,255,.28) 0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background 1s ease;
+}
+.ring .hole{
+  width:58px;height:58px;border-radius:50%;background:color-mix(in srgb, var(--primary) 78%, var(--accent) 22%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;
+}
+.ring .hole b{font-size:17px;font-variant-numeric:tabular-nums;}
+.ring .hole span{font-size:9px;opacity:.85;margin-top:2px;}
+.hero-msg{font-size:13px;line-height:1.5;}
+.hero-msg b{font-size:14.5px;display:block;margin-bottom:2px;}
+
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.section-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:14px;text-align:left;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:8px;color:var(--ink);
+}
+.section-card .top{display:flex;align-items:center;gap:8px;}
+.section-card .emoji{
+  width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:19px;background:var(--surface-2);flex:none;
+}
+.section-card .tag{font-size:10.5px;color:var(--muted);letter-spacing:.03em;}
+.section-card .name{font-size:13.5px;font-weight:700;line-height:1.35;}
+.meter{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
+.meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg, var(--primary), var(--accent));transition:width .6s ease;}
+.section-card .pct{font-size:11px;color:var(--ink-soft);font-variant-numeric:tabular-nums;text-align:right;}
+
+.block-title{font-size:13px;color:var(--ink-soft);margin:4px 2px 10px;display:flex;align-items:center;gap:6px;}
+
+/* ---- section detail ---- */
+.mode-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;cursor:pointer;
+  margin-bottom:12px;color:var(--ink);
+}
+.mode-card .ico{font-size:26px;width:48px;height:48px;border-radius:14px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex:none;}
+.mode-card .txt h3{font-size:15px;margin-bottom:2px;}
+.mode-card .txt p{margin:0;font-size:12px;color:var(--ink-soft);}
+.mode-card .go{margin-left:auto;color:var(--primary-deep);font-size:18px;}
+.stat-row{display:flex;gap:10px;margin-bottom:16px;}
+.stat-tile{flex:1;background:var(--surface-2);border-radius:var(--radius-sm);padding:10px 12px;}
+.stat-tile b{display:block;font-size:17px;font-variant-numeric:tabular-nums;}
+.stat-tile span{font-size:10.5px;color:var(--ink-soft);}
+
+/* ---- flashcards ---- */
+.progress-line{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);margin-bottom:10px;font-variant-numeric:tabular-nums;}
+.progress-track{flex:1;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
+.progress-track i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .35s ease;}
+
+.flip-zone{perspective:1200px;margin-bottom:16px;}
+.flip-card{
+  min-height:280px;border-radius:var(--radius-lg);position:relative;cursor:pointer;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.flip-card.flipped{transform:rotateY(180deg);}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius-lg);
+  padding:26px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+}
+.face.front{background:linear-gradient(160deg,var(--surface),var(--surface-2));}
+.face.back{background:linear-gradient(160deg, var(--primary), var(--accent));color:#fff;transform:rotateY(180deg);overflow-y:auto;}
+.face .hint{font-size:11px;color:var(--muted);letter-spacing:.05em;}
+.face.back .hint{color:rgba(255,255,255,.85);}
+.face .term{font-family:"Mochiy Pop One",sans-serif;font-size:24px;line-height:1.4;}
+.face .kana{font-size:12.5px;color:var(--ink-soft);}
+.face.back .def{font-size:14.5px;line-height:1.7;}
+.tap-note{text-align:center;font-size:11.5px;color:var(--muted);margin:-6px 0 16px;}
+
+.swipe-row{display:flex;gap:10px;}
+.swipe-btn{
+  flex:1;padding:14px 8px;border-radius:99px;border:none;font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.swipe-btn.again{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border);}
+.swipe-btn.got{background:linear-gradient(90deg,var(--primary),var(--primary-deep));color:#fff;box-shadow:var(--shadow);}
+
+/* ---- quiz ---- */
+.quiz-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:20px 18px;box-shadow:var(--shadow);margin-bottom:14px;
+}
+.quiz-q{font-size:15.5px;line-height:1.7;white-space:pre-wrap;}
+.quiz-q pre{
+  background:var(--surface-2);border-radius:var(--radius-sm);padding:10px 12px;font-size:12.5px;
+  overflow-x:auto;margin:10px 0 2px;border:1px solid var(--border);font-family:"SFMono-Regular",Consolas,monospace;
+}
+.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:6px;}
+.choice{
+  text-align:left;padding:13px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
+  background:var(--surface);color:var(--ink);font-size:14px;line-height:1.5;cursor:pointer;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.choice .lbl{
+  width:22px;height:22px;border-radius:50%;background:var(--surface-2);color:var(--ink-soft);
+  font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;
+}
+.choice:disabled{cursor:default;}
+.choice.correct{background:var(--good-bg);border-color:var(--good);color:var(--ink);}
+.choice.correct .lbl{background:var(--good);color:#fff;}
+.choice.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--ink);}
+.choice.wrong .lbl{background:var(--bad);color:#fff;}
+.choice.dim{opacity:.55;}
+
+.explain{
+  margin-top:14px;border-radius:var(--radius-sm);padding:14px 15px;background:var(--surface-2);
+  border:1px dashed var(--border);font-size:13.5px;line-height:1.75;color:var(--ink);
+}
+.explain b{color:var(--primary-deep);}
+.feedback{font-family:"Mochiy Pop One",sans-serif;font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.feedback.is-good{color:var(--good);}
+.feedback.is-bad{color:var(--bad-ink);}
+
+.primary-btn{
+  width:100%;padding:15px;border-radius:99px;border:none;background:linear-gradient(90deg,var(--primary),var(--primary-deep));
+  color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);
+}
+.ghost-btn{
+  width:100%;padding:14px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);
+  color:var(--ink-soft);font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;
+}
+
+/* ---- result ---- */
+.result-wrap{text-align:center;padding:18px 6px;}
+.result-ring{
+  width:150px;height:150px;border-radius:50%;margin:8px auto 18px;
+  background:conic-gradient(var(--primary) var(--pct,0%), var(--surface-2) 0);
+  display:flex;align-items:center;justify-content:center;
+}
+.result-ring .hole{
+  width:120px;height:120px;border-radius:50%;background:var(--surface);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px var(--border);
+}
+.result-ring .hole b{font-size:30px;font-variant-numeric:tabular-nums;}
+.result-ring .hole span{font-size:11px;color:var(--ink-soft);}
+.result-title{font-size:19px;margin-bottom:6px;}
+.result-sub{font-size:13px;color:var(--ink-soft);margin-bottom:20px;line-height:1.6;}
+
+/* ---- review / records ---- */
+.empty-state{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+.empty-state .big{font-size:38px;display:block;margin-bottom:10px;}
+.weak-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;margin-bottom:10px;display:flex;gap:10px;align-items:center;
+}
+.weak-item .n{
+  width:26px;height:26px;border-radius:8px;background:var(--bad-bg);color:#d9556f;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex:none;
+}
+.weak-item .txt{flex:1;font-size:13px;line-height:1.5;}
+.weak-item .txt .q{font-weight:700;margin-bottom:2px;}
+.weak-item .txt .m{font-size:11px;color:var(--muted);}
+
+.rec-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;}
+.rec-row .emoji{font-size:20px;width:36px;height:36px;border-radius:10px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex:none;}
+.rec-row .body{flex:1;min-width:0;}
+.rec-row .body .t{font-size:12.5px;font-weight:700;margin-bottom:5px;}
+.rec-row .num{font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:38px;text-align:right;}
+
+/* ---- bottom nav ---- */
+.bottom-nav{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:12px;
+  width:calc(100% - 32px);max-width:448px;
+  background:var(--surface);border:1px solid var(--border);border-radius:99px;
+  display:flex;box-shadow:0 14px 30px -10px rgba(0,0,0,.25);
+  padding:6px;gap:4px;
+  padding-bottom:calc(6px + env(safe-area-inset-bottom, 0px));
+}
+.nav-btn{
+  flex:1;border:none;background:transparent;padding:9px 4px;border-radius:99px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:10px;
+}
+.nav-btn .ic{font-size:18px;}
+.nav-btn.active{background:linear-gradient(90deg,var(--primary),var(--accent));color:#fff;}
+.nav-btn .badge{
+  position:absolute;margin-left:14px;margin-top:-16px;background:var(--bad);color:#fff;font-size:9px;
+  min-width:15px;height:15px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+
+.confirm-overlay{
+  position:fixed;inset:0;background:rgba(30,10,20,.45);display:flex;align-items:center;justify-content:center;
+  padding:24px;z-index:50;
+}
+.confirm-box{
+  background:var(--surface);border-radius:var(--radius-md);padding:20px;max-width:320px;width:100%;
+  box-shadow:var(--shadow);text-align:center;
+}
+.confirm-box p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:8px 0 16px;}
+.confirm-row{display:flex;gap:8px;}
+.confirm-row button{flex:1;padding:11px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface-2);font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;}
+.confirm-row button.danger{background:var(--bad);border-color:var(--bad);color:#fff;}
+
+.settings-btn{
+  position:absolute;right:0;top:14px;background:rgba(255,255,255,.25);border:none;width:32px;height:32px;border-radius:50%;
+  color:#fff;font-size:15px;cursor:pointer;
+}
+</style>
+
+<div class="app" id="app"></div>
+
+<div class="bottom-nav" id="bottomNav">
+  <button class="nav-btn" data-tab="home"><span class="ic">🏠</span>ホーム</button>
+  <button class="nav-btn" data-tab="review"><span class="ic">💗</span>にがて復習</button>
+  <button class="nav-btn" data-tab="records"><span class="ic">📔</span>きろく</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================== DATA ============================== */
+
+function cards(list){ return list.map(function(c,i){ return {idx:i, term:c[0], kana:c[1]||"", def:c[2]}; }); }
+
+var SECTIONS = [
+{
+  id:1, title:"第1問", name:"ハードウェア・ソフトウェア", emoji:"💻",
+  desc:"パソコンの部品やOS、ソフトの種類にまつわる用語",
+  cards: cards([
+    ["CPU","シーピーユー","コンピュータの頭脳にあたる部分。プログラムの命令を解読し、計算やデータ処理を行う装置。「中央処理装置」ともいう。"],
+    ["レジスタ","","CPUの内部にある、演算中のデータを一時的に記憶する非常に高速な記憶回路。"],
+    ["キャッシュメモリ","","CPUと主記憶装置(メモリ)の処理速度差を埋めるために置かれる、小容量で高速な記憶装置。"],
+    ["GPU","ジーピーユー","画像処理を専門に行う処理装置。グラフィックスや3D描画、AIの計算などを高速に行う。"],
+    ["SSD","エスエスディー","フラッシュメモリを使った補助記憶装置。HDDより読み書きが高速で、衝撃にも強い。"],
+    ["RAID","レイド","複数のハードディスクを組み合わせて、信頼性や処理速度を高める技術。"],
+    ["OCR","オーシーアール","手書きや印刷された文字を光学的に読み取り、コンピュータで扱えるデータに変換する装置。"],
+    ["OMR","オーエムアール","マークシートなどの塗りつぶされた位置を光学的に読み取る装置。"],
+    ["ドライバ","","周辺機器をOSが制御できるようにするための専用ソフトウェア。"],
+    ["OS","オペレーティングシステム","ハードウェアとソフトウェアを管理し、コンピュータ全体を制御する基本ソフトウェア。"],
+    ["フリーウェア","","無償で使用できるソフトウェア。著作権そのものは作者に残る。"],
+    ["シェアウェア","","一定期間は無料で試用でき、継続して使うには対価の支払いが必要なソフトウェア。"],
+    ["オープンソースソフトウェア","OSS","ソースコード(設計図)が公開され、誰でも改良・再配布できるソフトウェア。"],
+    ["サブスクリプション","","一定期間ごとに料金を支払い、その間サービスやソフトを利用できる契約方式。"],
+    ["Bluetooth","ブルートゥース","数メートル程度の近距離で機器同士を無線接続する通信規格。"],
+    ["USB","ユーエスビー","パソコンと周辺機器を接続するための、標準的なインタフェース規格。"]
+  ])
+},
+{
+  id:2, title:"第2問", name:"通信ネットワーク・セキュリティ", emoji:"🌐",
+  desc:"ネットワークのしくみと、情報モラル・セキュリティの用語",
+  cards: cards([
+    ["LAN","ラン","学校や会社など、比較的せまい範囲内でコンピュータ同士を接続するネットワーク。"],
+    ["WAN","ワン","広い地域に分散したLAN同士を、通信回線で接続したより広範囲のネットワーク。"],
+    ["Wi-Fi","ワイファイ","無線でLANに接続する技術の一般的な呼び名。"],
+    ["IPアドレス","","ネットワーク上でコンピュータを識別するために割り振られる番号。"],
+    ["ドメイン名","","IPアドレスを人にわかりやすい文字列で表したもの。"],
+    ["プロトコル","","コンピュータ同士が通信するときの共通の約束事・手順。"],
+    ["TCP/IP","","インターネットで標準的に使われる、通信プロトコルの集まり。"],
+    ["パケット交換方式","","データを小さな単位(パケット)に分割して送受信する通信方式。"],
+    ["VPN","ブイピーエヌ","インターネットのような公衆回線を、専用回線のように安全に利用する技術。"],
+    ["シンクライアント","","端末側には最小限の機能しか持たせず、処理やデータ管理をサーバ側で行うしくみ。"],
+    ["フィッシング詐欺","","金融機関などを装った偽のメールやサイトで、個人情報をだまし取る行為。"],
+    ["ランサムウェア","","感染したコンピュータのデータを暗号化し、復旧と引き換えに金銭を要求する不正プログラム。"],
+    ["ガンブラー","","Webサイトを改ざんし、閲覧しただけでウイルスに感染させる攻撃手法。"],
+    ["ワンクリック詐欺","","リンクや画像を1回クリックしただけで、契約成立だと料金を請求してくる詐欺。"],
+    ["不正アクセス禁止法","","他人のID・パスワードを無断で使ってアクセスする行為などを禁止する法律。"],
+    ["著作権法","","音楽・文章・プログラムなどの著作物を、無断で複製・利用されないよう保護する法律。"]
+  ])
+},
+{
+  id:3, title:"第3問", name:"表計算ソフトウェア", emoji:"📊",
+  desc:"参照方式や関数など、表計算ソフトの基本用語",
+  cards: cards([
+    ["相対参照","","セルをコピーすると、コピー先に応じて参照するセル番地が自動的に変化する参照方式。"],
+    ["絶対参照","","「$A$1」のように行と列を固定し、コピーしても参照するセル番地が変わらない参照方式。"],
+    ["複合参照","","行または列のどちらか一方だけを固定する参照方式(例: $A1 や A$1)。"],
+    ["フィルハンドル","","セルの右下にある小さな四角。ドラッグすると連続データのコピーや連番入力ができる。"],
+    ["ワイルドカード","","「*」や「?」など、文字列の一部をあいまいに指定して検索するための記号。"],
+    ["ピボットテーブル","","大量のデータを、項目ごとに集計・分析する機能。"],
+    ["マクロ","","一連の操作を記録し、あとから自動的に実行できるようにする機能。"],
+    ["条件付き書式","","セルの値が特定の条件を満たしたときに、自動的に色などの書式を変える機能。"],
+    ["SUM関数","","指定した範囲の数値の合計を求める関数。"],
+    ["AVERAGE関数","","指定した範囲の数値の平均を求める関数。"],
+    ["COUNTIF関数","","指定した範囲の中で、条件に一致するセルの個数を数える関数。"],
+    ["SUMIF関数","","指定した範囲の中で、条件に一致するセルに対応する値の合計を求める関数。"],
+    ["RANK関数","","指定した範囲の中で、ある数値が何番目に大きい(または小さい)かを求める関数。"],
+    ["IF関数","","条件を満たすかどうかによって、異なる結果を表示する関数。"],
+    ["ROUND関数","","指定した桁数で数値を四捨五入する関数。"],
+    ["VLOOKUP関数","","指定した範囲の一番左の列から検索値をさがし、対応する行の値を取り出す関数。"]
+  ])
+},
+{
+  id:4, title:"第4問", name:"計算問題", emoji:"🧮",
+  desc:"2進数・稼働率・実効アクセス時間などの計算パターン",
+  cards: cards([
+    ["直列の稼働率","公式カード","稼働率A × 稼働率B\n(どちらも動いていないとシステムが止まる)"],
+    ["並列の稼働率","公式カード","1 - (1-稼働率A) × (1-稼働率B)\n(どちらか一方が動いていればOK)"],
+    ["稼働率(MTBF/MTTR)","公式カード","MTBF ÷ (MTBF + MTTR)\nMTBF=平均故障間隔、MTTR=平均修復時間"],
+    ["実効アクセス時間","公式カード","ヒット率×キャッシュの時間 + (1-ヒット率)×主記憶の時間"],
+    ["損益分岐点(数量)","公式カード","固定費 ÷ (販売価格 - 変動費)"],
+    ["2進数→10進数","公式カード","各桁に 2の0乗,1乗,2乗… をかけて合計する"],
+    ["10進数→2進数","公式カード","2で割り続けて、余りを下から並べる"],
+    ["シフト演算","公式カード","左にnビットシフト = 2のn乗 倍\n右にnビットシフト = 2のn乗 で割る(切り捨て)"]
+  ]),
+  quiz: [
+    {q:"2進数の 1011 を10進数で表すとどれか。", ch:["9","10","11","13"], a:2,
+     ex:"右から順に2の0乗・1乗・2乗・3乗の位と考えます。1×8 + 0×4 + 1×2 + 1×1 = 8+0+2+1 = <b>11</b> です。"},
+    {q:"10進数の 22 を2進数で表すとどれか。", ch:["10101","10110","11010","10011"], a:1,
+     ex:"22を2で割り続け、余りを下から並べます。22÷2=11余り0 → 11÷2=5余り1 → 5÷2=2余り1 → 2÷2=1余り0 → 1÷2=0余り1。下から並べると <b>10110</b> になります。"},
+    {q:"1バイトは何ビットで構成されるか。", ch:["4ビット","8ビット","16ビット","32ビット"], a:1,
+     ex:"1バイトは<b>8ビット</b>で構成される、というのがコンピュータの基本ルールです。"},
+    {q:"2進数 00000101(10進数で5)を左に2ビットシフトした結果を10進数で表すとどれか。", ch:["10","15","20","40"], a:2,
+     ex:"左シフトnビットは「2のn乗倍」と同じです。5 × 2^2 = 5 × 4 = <b>20</b> になります(2進数では00010100)。"},
+    {q:"2進数 00001100(10進数で12)を右に2ビットシフトした結果を10進数で表すとどれか。", ch:["3","6","24","48"], a:0,
+     ex:"右シフトnビットは「2のn乗で割る(端数切り捨て)」と同じです。12 ÷ 2^2 = 12 ÷ 4 = <b>3</b> になります。"},
+    {q:"稼働率0.9の装置を直列に2台接続したとき、システム全体の稼働率はどれか。", ch:["0.81","0.90","0.95","0.99"], a:0,
+     ex:"直列接続は、両方が動いていないとシステムが止まるため掛け算になります。0.9 × 0.9 = <b>0.81</b>。"},
+    {q:"稼働率0.9の装置を並列に2台接続したとき、システム全体の稼働率はどれか。", ch:["0.81","0.90","0.95","0.99"], a:3,
+     ex:"並列接続は、どちらか一方が動いていればOKなので「両方とも故障する確率」を1から引きます。(1-0.9)×(1-0.9)=0.01。1-0.01=<b>0.99</b>。"},
+    {q:"あるシステムの平均故障間隔(MTBF)が190時間、平均修復時間(MTTR)が10時間のとき、稼働率はどれか。", ch:["0.05","0.90","0.95","19.0"], a:2,
+     ex:"稼働率 = MTBF ÷ (MTBF+MTTR) で求めます。190 ÷ (190+10) = 190 ÷ 200 = <b>0.95</b>。"},
+    {q:"キャッシュのヒット率が0.8、キャッシュのアクセス時間が10ナノ秒、主記憶のアクセス時間が60ナノ秒のとき、実効アクセス時間は何ナノ秒か。", ch:["18","20","50","60"], a:1,
+     ex:"実効アクセス時間 = ヒット率×キャッシュの時間 + (1-ヒット率)×主記憶の時間。0.8×10 + 0.2×60 = 8+12 = <b>20ナノ秒</b>。"},
+    {q:"固定費300,000円、販売価格1,000円/個、変動費400円/個のとき、損益分岐点の販売数量は何個か。", ch:["300個","500個","600個","750個"], a:1,
+     ex:"損益分岐点の数量 = 固定費 ÷ (販売価格-変動費)。300,000 ÷ (1,000-400) = 300,000 ÷ 600 = <b>500個</b>。"},
+    {q:"コンピュータの世界で使われる、1KB(キロバイト)にあたるバイト数として検定でよく使われるものはどれか。", ch:["1,000バイト","1,024バイト","1,048,576バイト","100バイト"], a:1,
+     ex:"コンピュータは2進数が基準なので、1KB = 2の10乗 = <b>1,024バイト</b>として計算するのが基本です。"},
+    {q:"元金100,000円を年利3%・単利で2年間預けたときの利息の合計はどれか。", ch:["3,000円","6,000円","6,090円","9,000円"], a:1,
+     ex:"単利は毎年「元金」だけに利息がつく計算方法です。1年目=100,000×0.03=3,000円、2年目も同じく3,000円。合計 3,000×2 = <b>6,000円</b>(複利のように利息に利息はつきません)。"},
+    {q:"稼働率0.8の装置Aと0.75の装置Bを直列に接続したとき、システムの稼働率はどれか。", ch:["0.55","0.60","0.95","1.55"], a:1,
+     ex:"直列接続なのでそれぞれの稼働率を掛け合わせます。0.8 × 0.75 = <b>0.60</b>。"},
+    {q:"記憶容量2GBのUSBメモリに、1件2MBの写真データを保存できる件数は最大何件か(1GB=1,024MBとし、端数切り捨て)。", ch:["512件","1,024件","2,048件","4,096件"], a:1,
+     ex:"2GB=2×1,024=2,048MB。1件2MBなので 2,048 ÷ 2 = <b>1,024件</b>保存できます。"}
+  ]
+},
+{
+  id:5, title:"第5問", name:"データベース(SQL)", emoji:"🗄️",
+  desc:"主キーや正規化などの用語と、SELECT文などのSQL操作",
+  cards: cards([
+    ["主キー","プライマリキー","テーブル内のレコードを一意に識別するための項目。重複や空欄(NULL)は許されない。"],
+    ["外部キー","フォーリンキー","別のテーブルの主キーを参照して、テーブル同士を関連づけるための項目。"],
+    ["正規化","","データの重複や矛盾をなくすために、テーブルを整理・分割すること。"],
+    ["レコード","","テーブルの1行分のデータのまとまり。"],
+    ["フィールド","","テーブルの1列分の項目(列見出し)。"],
+    ["リレーショナルデータベース","","複数の表(テーブル)を関連づけて管理するデータベースの方式。"],
+    ["インデックス","","検索を高速に行うために作成する、データの索引。"],
+    ["SELECT文","","テーブルからデータを取り出す(検索する)ためのSQL文。"],
+    ["WHERE句","","SELECT文などで、条件を指定して絞り込むために使う句。"],
+    ["GROUP BY句","","指定した項目の値ごとにレコードをグループ化して集計するための句。"],
+    ["ORDER BY句","","検索結果を、指定した項目で並べ替えるための句。"],
+    ["結合(JOIN)","","複数のテーブルを共通の項目で結びつけて、1つの表のように扱うこと。"],
+    ["集計関数","","SUM(合計)・COUNT(件数)・AVG(平均)・MAX(最大)・MIN(最小)など、まとめて計算する関数。"],
+    ["INSERT文","","テーブルに新しいレコードを追加するためのSQL文。"],
+    ["UPDATE文","","テーブル内の既存レコードの内容を変更するためのSQL文。"],
+    ["DELETE文","","テーブルから不要なレコードを削除するためのSQL文。"]
+  ]),
+  quiz: [
+    {q:"次の「商品表」を使って考える。\n単価が100円以上の商品をすべて表示するSQL文はどれか。",
+     table:"商品表\n商品コード 商品名     単価 在庫数\nA001      ノート      120  50\nA002      消しゴム    80   30\nA003      ボールペン  150  20\nA004      定規        100  15",
+     ch:["SELECT * FROM 商品表 WHERE 単価 >= 100","SELECT * FROM 商品表 WHERE 単価 = 100","SELECT * FROM 商品表 ORDER BY 単価","SELECT * FROM 商品表 WHERE 単価 <= 100"], a:0,
+     ex:"条件をつけて絞り込むには<b>WHERE句</b>を使います。「100円以上」は「単価 >= 100」と表します。"},
+    {q:"商品表を単価の高い順に並べ替えて表示するSQL文はどれか。",
+     ch:["SELECT * FROM 商品表 ORDER BY 単価 ASC","SELECT * FROM 商品表 ORDER BY 単価 DESC","SELECT * FROM 商品表 GROUP BY 単価","SELECT * FROM 商品表 WHERE 単価 DESC"], a:1,
+     ex:"並べ替えは<b>ORDER BY句</b>、降順(大きい順)は<b>DESC</b>を指定します。ASCは昇順(省略時のデフォルト)です。"},
+    {q:"商品表の在庫数の合計を求めるSQL文はどれか。", ch:["SELECT COUNT(在庫数) FROM 商品表","SELECT AVG(在庫数) FROM 商品表","SELECT SUM(在庫数) FROM 商品表","SELECT MAX(在庫数) FROM 商品表"], a:2,
+     ex:"合計を求める集計関数は<b>SUM</b>です。COUNTは件数、AVGは平均、MAXは最大値を求めます。"},
+    {q:"商品表に新しい商品(A005, 修正テープ, 200, 10)を追加するSQL文はどれか。",
+     ch:["UPDATE 商品表 SET 商品コード='A005'","INSERT INTO 商品表 VALUES ('A005','修正テープ',200,10)","DELETE FROM 商品表 WHERE 商品コード='A005'","SELECT INTO 商品表 VALUES ('A005','修正テープ',200,10)"], a:1,
+     ex:"新しいレコードの追加は<b>INSERT INTO</b>文です。VALUESのあとに、追加する値を列の順番どおりに指定します。"},
+    {q:"商品表から在庫数が20未満の商品を削除するSQL文はどれか。",
+     ch:["DELETE FROM 商品表 WHERE 在庫数 < 20","UPDATE 商品表 WHERE 在庫数 < 20","DELETE 商品表 IF 在庫数 < 20","SELECT * FROM 商品表 WHERE 在庫数 < 20"], a:0,
+     ex:"レコードの削除は<b>DELETE FROM</b>文を使い、WHERE句で条件を指定します。"},
+    {q:"商品表の「ボールペン」の単価を150円から160円に変更するSQL文はどれか。",
+     ch:["INSERT INTO 商品表 SET 単価=160 WHERE 商品名='ボールペン'","UPDATE 商品表 SET 単価=160 WHERE 商品名='ボールペン'","DELETE FROM 商品表 SET 単価=160","SELECT 単価=160 FROM 商品表 WHERE 商品名='ボールペン'"], a:1,
+     ex:"既存レコードの変更は<b>UPDATE ... SET 列名=新しい値 WHERE 条件</b>の形で書きます。"},
+    {q:"商品名の中に「ペン」という文字を含む商品を検索するSQL文はどれか。",
+     ch:["SELECT * FROM 商品表 WHERE 商品名 = 'ペン'","SELECT * FROM 商品表 WHERE 商品名 LIKE '%ペン%'","SELECT * FROM 商品表 WHERE 商品名 IN ('ペン')","SELECT * FROM 商品表 WHERE 商品名 > 'ペン'"], a:1,
+     ex:"文字列の一部一致には<b>LIKE</b>とワイルドカード「%」を使います。「%ペン%」は「ペン」を含む文字列という意味です。"},
+    {q:"部門ごとの売上合計を求めたい。レコードを「部門」の値ごとにグループ化するために使う句はどれか。", ch:["WHERE句","GROUP BY句","ORDER BY句","HAVING句"], a:1,
+     ex:"同じ値のレコードをひとまとめにして集計するには<b>GROUP BY句</b>を使います。"},
+    {q:"「商品表」と「注文表」を、共通する項目「商品コード」で結びつけて1つの表のように扱うことを何というか。", ch:["正規化","結合(JOIN)","索引の作成","主キーの設定"], a:1,
+     ex:"複数のテーブルを共通の項目(多くは主キーと外部キー)で結びつけることを<b>結合(JOIN)</b>といいます。"},
+    {q:"単価が100円以上200円以下の商品を検索するSQL文として適切なのはどれか。",
+     ch:["SELECT * FROM 商品表 WHERE 単価 BETWEEN 100 AND 200","SELECT * FROM 商品表 WHERE 単価 = 100 AND 200","SELECT * FROM 商品表 WHERE 単価 IN 100","SELECT * FROM 商品表 WHERE 単価 LIKE 100"], a:0,
+     ex:"ある範囲の値の検索には<b>BETWEEN A AND B</b>を使います。「100以上200以下」を簡潔に表せます。"},
+    {q:"商品表の中で、単価が最も高い商品の単価を求めるSQL文はどれか。", ch:["SELECT MIN(単価) FROM 商品表","SELECT MAX(単価) FROM 商品表","SELECT AVG(単価) FROM 商品表","SELECT COUNT(単価) FROM 商品表"], a:1,
+     ex:"最大値を求める集計関数は<b>MAX</b>です。最小値はMIN、平均はAVG、件数はCOUNTで求めます。"},
+    {q:"テーブル内のレコードを一意に識別するために設定する、重複やNULLが許されない項目を何というか。", ch:["外部キー","主キー","インデックス","レコード"], a:1,
+     ex:"<b>主キー(プライマリキー)</b>は、テーブルの中で1件1件のレコードを区別するための項目です。"}
+  ]
+},
+{
+  id:6, title:"第6問・実技", name:"表計算 実践問題", emoji:"✨",
+  desc:"関数を使って実際に式を作る、実技につながる練習",
+  cards: cards([
+    ["SUM","=SUM(範囲)","指定した範囲の数値の合計を求める。"],
+    ["AVERAGE","=AVERAGE(範囲)","指定した範囲の数値の平均を求める。"],
+    ["IF","=IF(条件,真の値,偽の値)","条件を満たすかどうかで表示する内容を変える。"],
+    ["ROUND / ROUNDUP / ROUNDDOWN","=ROUND(数値,桁数)","四捨五入・切り上げ・切り捨てを行う。桁数0で整数にする。"],
+    ["RANK","=RANK(セル,範囲,順序)","範囲の中での順位を求める。降順は0、昇順は1。"],
+    ["VLOOKUP","=VLOOKUP(検索値,範囲,列番号,0)","範囲の一番左の列から検索し、対応する列の値を取り出す。"],
+    ["COUNTIF","=COUNTIF(範囲,条件)","条件に合うセルの個数を数える。"],
+    ["SUMIF","=SUMIF(条件範囲,条件,合計範囲)","条件に合うセルに対応する値の合計を求める。"]
+  ]),
+  quiz: [
+    {q:"次の「文房具売上表」を使って考える。\nB列=単価、C列=数量、D列=金額(空欄)。D2セルに入れる、金額を求める式として適切なものはどれか。",
+     table:"文房具売上表\n   A          B    C     D\n1  商品名     単価 数量  金額\n2  ノート     120  50    ?\n3  消しゴム   80   30\n4  ボールペン 150  20\n5  定規       100  15",
+     ch:["=B2+C2","=B2*C2","=B2/C2","=SUM(B2:C2)"], a:1,
+     ex:"金額は「単価×数量」で求めます。表計算ソフトの掛け算は<b>*</b>を使うので <b>=B2*C2</b> です。"},
+    {q:"D2:D5に入力した金額をD6セルに合計するには、どの式が適切か。", ch:["=D2+D5","=SUM(D2:D5)","=AVERAGE(D2:D5)","=D2*D5"], a:1,
+     ex:"連続した範囲の合計には<b>SUM関数</b>を使い、範囲は「:」でつなぎます。=D2+D5だとD2とD5の2つしか足せません。"},
+    {q:"E2セルに、D2の金額が他の商品と比べて何位か(金額が高い順)を表示したい。適切な式はどれか。",
+     ch:["=RANK(D2,$D$2:$D$5,0)","=RANK(D2,D2:D5)","=RANK($D$2:$D$5,D2)","=SUM(D2:D5)"], a:0,
+     ex:"順位は<b>RANK関数</b>で「=RANK(調べたいセル,比較する範囲,順序)」の形です。降順(大きい順)は0を指定し、あとでコピーしても範囲がずれないよう比較範囲は<b>絶対参照($D$2:$D$5)</b>にします。"},
+    {q:"上のE2セルの式を、フィルハンドルでE3~E5にコピーする。比較範囲を$D$2:$D$5のように固定しておく理由として最も適切なものはどれか。",
+     ch:["見た目をきれいにするため","コピーしても比較する範囲がずれないようにするため","計算を速くするため","文字列として扱うため"], a:1,
+     ex:"相対参照のままコピーすると参照範囲もずれてしまいます。<b>絶対参照</b>にすることで、コピーしても常に同じ範囲(D2:D5)を比較対象にできます。"},
+    {q:"在庫数(F列)が20以下の商品には「要発注」、それ以外は「在庫OK」と表示したい。F2セルに入れる式として適切なものはどれか。",
+     ch:["=IF(F2<=20,\"要発注\",\"在庫OK\")","=IF(F2<=20,\"在庫OK\",\"要発注\")","=IF(F2>=20,\"要発注\",\"在庫OK\")","=SUM(F2,\"要発注\",\"在庫OK\")"], a:0,
+     ex:"IF関数は「=IF(条件,真のときの値,偽のときの値)」です。「20以下なら要発注」なので条件はF2<=20、真の場合は\"要発注\"になります。"},
+    {q:"別の一覧表から、商品コードをキーにして単価などのデータを検索して取り出したい。適切な関数はどれか。", ch:["VLOOKUP関数","RANK関数","IF関数","ROUND関数"], a:0,
+     ex:"キーとなる値をもとに対応するデータを別表から探して取り出すのは<b>VLOOKUP関数</b>です。"},
+    {q:"消費税10%を含めた金額をG2セルに求めたい。D2セルが税抜金額のとき、小数点以下を切り捨てて表示する式として適切なものはどれか。",
+     ch:["=ROUNDUP(D2*1.1,0)","=ROUNDDOWN(D2*1.1,0)","=ROUND(D2*1.1,0)","=D2*1.1"], a:1,
+     ex:"「切り捨て」は<b>ROUNDDOWN関数</b>です。「=ROUNDDOWN(数値,桁数)」で桁数0は「整数(1の位)まで残す」という意味。切り上げはROUNDUP、四捨五入はROUNDです。"},
+    {q:"数量(C2:C5)が30個以上の商品の件数を数えたい。適切な式はどれか。",
+     ch:["=COUNTIF(C2:C5,\">=30\")","=SUMIF(C2:C5,\">=30\")","=COUNT(C2:C5,\">=30\")","=IF(C2:C5>=30)"], a:0,
+     ex:"条件に合うセルの<b>個数</b>を数えるのは<b>COUNTIF関数</b>です。「=COUNTIF(範囲,条件)」で、条件は\" \"で囲みます。"},
+    {q:"数量(C2:C5)が30個以上の商品の、金額(D2:D5)の合計を求めたい。適切な式はどれか。",
+     ch:["=SUMIF(C2:C5,\">=30\",D2:D5)","=COUNTIF(C2:C5,\">=30\",D2:D5)","=SUM(C2:C5,\">=30\")","=AVERAGEIF(C2:C5,D2:D5)"], a:0,
+     ex:"条件に合うセルに対応する別範囲の<b>合計</b>を求めるのは<b>SUMIF関数</b>です。「=SUMIF(条件範囲,条件,合計したい範囲)」の順番に注意しましょう。"},
+    {q:"時間の経過による売上の推移(トレンド)を表したいとき、最も適切なグラフの種類はどれか。", ch:["円グラフ","折れ線グラフ","レーダーチャート","棒グラフ"], a:1,
+     ex:"時間の経過にともなう変化(推移)を表すのに適しているのは<b>折れ線グラフ</b>です。円グラフは割合、棒グラフは数量の比較に向いています。"},
+    {q:"複数の項目それぞれが全体に占める割合(構成比)を表したいとき、最も適切なグラフの種類はどれか。", ch:["折れ線グラフ","円グラフ","散布図","棒グラフ"], a:1,
+     ex:"全体に対する各項目の割合を表すのに適しているのは<b>円グラフ</b>です。"},
+    {q:"セルの数式をコピーしたときに、コピー先に応じて参照するセル番地が自動的に変化する参照方式を何というか。", ch:["絶対参照","相対参照","複合参照","固定参照"], a:1,
+     ex:"何も指定しない通常の参照(A1など)は<b>相対参照</b>といい、コピーすると位置関係を保ったまま参照先が自動的にずれます。"}
+  ]
+}
+];
+
+/* ============================== STATE / STORAGE ============================== */
+
+var STORE_KEY = "zensho2_kirameki_v1";
+function loadStore(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {mastered:{}, best:{}, weak:{}};
+}
+function saveStore(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){}
+}
+var store = loadStore();
+if(!store.mastered) store.mastered = {};
+if(!store.best) store.best = {};
+if(!store.weak) store.weak = {};
+
+function masteredSet(sid){ return store.mastered[sid] || (store.mastered[sid]=[]); }
+function isMastered(sid, idx){ return masteredSet(sid).indexOf(idx) !== -1; }
+function markMastered(sid, idx){ var arr=masteredSet(sid); if(arr.indexOf(idx)===-1){ arr.push(idx); saveStore(); } }
+
+function sectionById(id){ for(var i=0;i<SECTIONS.length;i++){ if(SECTIONS[i].id===id) return SECTIONS[i]; } return null; }
+
+function bestPct(sid){ return store.best[sid] || 0; }
+function setBestPct(sid, pct){ if(pct > bestPct(sid)){ store.best[sid]=pct; saveStore(); } }
+
+function weakList(){
+  var out = [];
+  for(var k in store.weak){ if(Object.prototype.hasOwnProperty.call(store.weak,k)) out.push(store.weak[k]); }
+  out.sort(function(a,b){ return (b.count||1)-(a.count||1); });
+  return out;
+}
+function addWeak(item){
+  var key = item.sid+":"+item.key;
+  var prev = store.weak[key];
+  store.weak[key] = {sid:item.sid, key:item.key, q:item.q, ch:item.ch, a:item.a, ex:item.ex, table:item.table||"", sname:item.sname, count:(prev?prev.count:0)+1};
+  saveStore();
+}
+function removeWeak(sid, key){ var k = sid+":"+key; if(store.weak[k]){ delete store.weak[k]; saveStore(); } }
+
+function sectionProgressPct(sec){
+  var m = masteredSet(sec.id).length, total = sec.cards.length;
+  var mp = total ? Math.round(m/total*100) : 0;
+  var qp = bestPct(sec.id);
+  return Math.max(mp, qp);
+}
+function overallPct(){
+  var sum=0; for(var i=0;i<SECTIONS.length;i++) sum += sectionProgressPct(SECTIONS[i]);
+  return Math.round(sum / SECTIONS.length);
+}
+
+/* ============================== QUIZ BUILDING ============================== */
+
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+// term-based auto quiz: build 4-choice questions from a card pool
+function buildTermQuiz(sec){
+  var pool = sec.cards;
+  var order = shuffle(pool);
+  return order.map(function(card){
+    var dir = Math.random() < 0.5;
+    var distractors = shuffle(pool.filter(function(c){return c.idx!==card.idx;})).slice(0,3);
+    var options = shuffle([card].concat(distractors));
+    var correctPos = options.indexOf(card);
+    var qText, choices;
+    if(dir){
+      qText = "次の説明にあてはまる用語はどれか。\n「"+card.def+"」";
+      choices = options.map(function(o){ return o.term + (o.kana && o.kana!=="公式カード" ? "("+o.kana+")" : ""); });
+    }else{
+      qText = "「"+card.term+"」の説明として正しいものはどれか。";
+      choices = options.map(function(o){ return o.def; });
+    }
+    return {sid:sec.id, sname:sec.name, key:"term"+card.idx+(dir?"d":"t"), q:qText, ch:choices, a:correctPos,
+      ex:"正解は「"+card.term+"」。"+card.def};
+  });
+}
+
+function buildAuthoredQuiz(sec){
+  return shuffle(sec.quiz).map(function(item, i){
+    var opts = item.ch.map(function(t,idx){ return {t:t, orig:idx}; });
+    var shuffled = shuffle(opts);
+    var correctPos = shuffled.findIndex(function(o){ return o.orig===item.a; });
+    return {sid:sec.id, sname:sec.name, key:"quiz"+i+"_"+item.q.slice(0,6), q:item.q, table:item.table||"", ch:shuffled.map(function(o){return o.t;}), a:correctPos, ex:item.ex};
+  });
+}
+
+function buildQuizForSection(sec){
+  var out = [];
+  if(sec.cards && sec.cards.length && sec.cards[0].kana !== "公式カード"){
+    out = out.concat(buildTermQuiz(sec));
+  }
+  if(sec.quiz && sec.quiz.length){ out = out.concat(buildAuthoredQuiz(sec)); }
+  return shuffle(out);
+}
+
+/* ============================== VIEW STATE ============================== */
+
+var view = {
+  tab: "home",
+  screen: "home", // home | section | flashcard | quiz | result
+  sectionId: null,
+  fc: null, // flashcard runtime state
+  qz: null  // quiz runtime state
+};
+
+var app = document.getElementById("app");
+var bottomNav = document.getElementById("bottomNav");
+
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function nl2br(s){ return esc(s).replace(/\n/g,"<br>"); }
+
+function setTab(t){ view.tab = t; view.screen = t==="home" ? "home" : t; render(); }
+
+/* ---------- Home ---------- */
+function renderHome(){
+  var pct = overallPct();
+  var msg = pct===0 ? ["はじめまして🌸","第1問からゆっくり覚えていこう!"]
+    : pct<40 ? ["いいスタート!","少しずつ用語になれてきたね"]
+    : pct<70 ? ["のってきた!💪","にがて復習もあわせてやってみよう"]
+    : pct<95 ? ["すごくがんばってる!✨","この調子で満点をめざそう"]
+    : ["パーフェクトに近い!🏆","このレベルをキープしよう"];
+  var html = "";
+  html += '<div class="hero">'
+    + '<div class="brand"><span class="mark">🎀</span><div><h1>きらめき情報処理帳</h1><p>情報処理検定2級 ビジネス情報部門・対応</p></div></div>'
+    + '<div class="hero-stats">'
+    + '<div class="ring" style="--pct:'+pct+'%"><div class="hole"><b>'+pct+'%</b><span>ぜんたい</span></div></div>'
+    + '<div class="hero-msg"><b>'+msg[0]+'</b>'+msg[1]+'</div>'
+    + '</div></div>';
+  html += '<div class="block-title">📚 大問ごとに勉強する</div>';
+  html += '<div class="section-grid">';
+  SECTIONS.forEach(function(sec){
+    var p = sectionProgressPct(sec);
+    html += '<button class="section-card" data-open="'+sec.id+'">'
+      + '<div class="top"><div class="emoji">'+sec.emoji+'</div><div><div class="tag">'+sec.title+'</div></div></div>'
+      + '<div class="name">'+esc(sec.name)+'</div>'
+      + '<div class="meter"><i style="width:'+p+'%"></i></div>'
+      + '<div class="pct">'+p+'%</div>'
+      + '</button>';
+  });
+  html += '</div>';
+  app.innerHTML = html;
+  app.querySelectorAll("[data-open]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      view.sectionId = parseInt(btn.getAttribute("data-open"),10);
+      view.screen = "section";
+      render();
+    });
+  });
+}
+
+/* ---------- Section detail ---------- */
+function renderSection(){
+  var sec = sectionById(view.sectionId);
+  var m = masteredSet(sec.id).length, total = sec.cards.length;
+  var best = bestPct(sec.id);
+  var html = "";
+  html += topbar(sec.title+"・"+sec.name, sec.emoji, function(){ view.screen="home"; render(); });
+  html += '<p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 16px;line-height:1.6;">'+esc(sec.desc)+'</p>';
+  html += '<div class="stat-row">'
+    + '<div class="stat-tile"><b>'+m+' / '+total+'</b><span>覚えたカード</span></div>'
+    + '<div class="stat-tile"><b>'+best+'%</b><span>最高正答率</span></div>'
+    + '</div>';
+  html += '<button class="mode-card" id="goFlash"><div class="ico">🌸</div><div class="txt"><h3>暗記カードでおぼえる</h3><p>用語をめくって覚える。自分のペースでOK</p></div><div class="go">›</div></button>';
+  html += '<button class="mode-card" id="goQuiz"><div class="ico">✏️</div><div class="txt"><h3>クイズに挑戦する</h3><p>4択問題で実力チェック。解説つき</p></div><div class="go">›</div></button>';
+  app.innerHTML = html;
+  bindTopbarBack();
+  document.getElementById("goFlash").addEventListener("click", function(){ startFlashcards(sec); });
+  document.getElementById("goQuiz").addEventListener("click", function(){ startQuiz(sec, null); });
+}
+
+function topbar(title, emoji, onBack){
+  return '<div class="topbar"><button class="back" id="backBtn">‹</button>'
+    + '<span class="emoji">'+emoji+'</span>'
+    + '<div class="titles"><h2>'+esc(title)+'</h2></div></div>';
+}
+var pendingBack = null;
+function bindTopbarBack(){
+  var b = document.getElementById("backBtn");
+  if(b) b.addEventListener("click", function(){ if(pendingBack) pendingBack(); });
+}
+
+/* ---------- Flashcards ---------- */
+function startFlashcards(sec){
+  view.fc = { sec:sec, queue: shuffle(sec.cards), pos:0, flipped:false, total: sec.cards.length, gotCount:0 };
+  view.screen = "flashcard";
+  render();
+}
+function renderFlashcard(){
+  var st = view.fc;
+  pendingBack = function(){ view.screen="section"; render(); };
+  if(st.pos >= st.queue.length){
+    var html = topbar(st.sec.title, st.sec.emoji);
+    html += '<div class="result-wrap">'
+      + '<div style="font-size:52px;">🌸✨</div>'
+      + '<h2 class="result-title">全部めくったね!</h2>'
+      + '<p class="result-sub">「覚えた」にしたカード: '+st.gotCount+' / '+st.total+'<br>むずかしかった用語は、クイズでもう一度チェックしてみよう。</p>'
+      + '<button class="primary-btn" id="toQuiz">✏️ クイズに挑戦する</button>'
+      + '<button class="ghost-btn" id="toSection">大問メニューに戻る</button>'
+      + '</div>';
+    app.innerHTML = html;
+    bindTopbarBack();
+    document.getElementById("toQuiz").addEventListener("click", function(){ startQuiz(st.sec, null); });
+    document.getElementById("toSection").addEventListener("click", function(){ view.screen="section"; render(); });
+    return;
+  }
+  var card = st.queue[st.pos];
+  var isFormula = card.kana === "公式カード";
+  var pct = Math.round(st.pos/st.queue.length*100);
+  var html = topbar(st.sec.title+" 暗記カード", st.sec.emoji);
+  html += '<div class="progress-line"><span>'+(st.pos+1)+' / '+st.queue.length+'</span><div class="progress-track"><i style="width:'+pct+'%"></i></div></div>';
+  html += '<div class="flip-zone"><div class="flip-card'+(st.flipped?" flipped":"")+'" id="flipCard">'
+    + '<div class="face front"><div class="hint">'+(isFormula?"公式":"よう語")+'</div><div class="term">'+esc(card.term)+'</div>'
+    + (card.kana && !isFormula ? '<div class="kana">'+esc(card.kana)+'</div>' : '')
+    + '</div>'
+    + '<div class="face back"><div class="hint">'+(isFormula?"つかいかた":"いみ")+'</div><div class="def">'+nl2br(card.def)+'</div></div>'
+    + '</div></div>';
+  html += '<p class="tap-note">タップしてめくる</p>';
+  html += '<div class="swipe-row">'
+    + '<button class="swipe-btn again" id="btnAgain">😵 もう一回</button>'
+    + '<button class="swipe-btn got" id="btnGot">🌸 覚えた!</button>'
+    + '</div>';
+  app.innerHTML = html;
+  bindTopbarBack();
+  document.getElementById("flipCard").addEventListener("click", function(){ st.flipped = !st.flipped; render(); });
+  document.getElementById("btnAgain").addEventListener("click", function(){
+    var c = st.queue.splice(st.pos,1)[0];
+    st.queue.push(c);
+    st.flipped=false;
+    render();
+  });
+  document.getElementById("btnGot").addEventListener("click", function(){
+    markMastered(st.sec.id, card.idx);
+    st.gotCount++;
+    st.pos++; st.flipped=false;
+    render();
+  });
+}
+
+/* ---------- Quiz ---------- */
+function startQuiz(sec, customQuestions){
+  var qs = customQuestions ? customQuestions : buildQuizForSection(sec);
+  view.qz = { sec:sec, questions:qs, pos:0, score:0, answered:false, pickedIdx:null, isReview: !!customQuestions };
+  view.screen = "quiz";
+  render();
+}
+function renderQuiz(){
+  var st = view.qz;
+  pendingBack = function(){ view.screen = st.isReview ? "review" : "section"; render(); };
+  if(st.pos >= st.questions.length){
+    var pct = st.questions.length ? Math.round(st.score/st.questions.length*100) : 0;
+    if(!st.isReview) setBestPct(st.sec.id, pct);
+    var tier = pct>=90 ? ["💯","パーフェクト!","この大問はもうバッチリだね"] :
+      pct>=70 ? ["🎉","すごい!あと少し!","にがてなところだけ復習しよう"] :
+      pct>=50 ? ["🌱","いいかんじ!","にがて復習で伸びしろをつぶそう"] :
+      ["🍀","だいじょうぶ、これからのびる","暗記カードでもう一周してみよう"];
+    var html = topbar((st.isReview?"にがて復習":st.sec.title)+" 結果", st.isReview?"💗":st.sec.emoji);
+    html += '<div class="result-wrap">'
+      + '<div style="font-size:44px;">'+tier[0]+'</div>'
+      + '<div class="result-ring" style="--pct:'+pct+'%"><div class="hole"><b>'+pct+'%</b><span>'+st.score+' / '+st.questions.length+'問正解</span></div></div>'
+      + '<h2 class="result-title">'+tier[1]+'</h2>'
+      + '<p class="result-sub">'+tier[2]+'</p>'
+      + '<button class="primary-btn" id="retryBtn">もう一度挑戦する</button>'
+      + '<button class="ghost-btn" id="homeBtn">ホームにもどる</button>'
+      + '</div>';
+    app.innerHTML = html;
+    bindTopbarBack();
+    document.getElementById("retryBtn").addEventListener("click", function(){
+      if(st.isReview) startReviewQuiz(); else startQuiz(st.sec, null);
+    });
+    document.getElementById("homeBtn").addEventListener("click", function(){ setTab("home"); });
+    return;
+  }
+  var q = st.questions[st.pos];
+  var pct = Math.round(st.pos/st.questions.length*100);
+  var labels = ["A","B","C","D"];
+  var html = topbar((st.isReview?"にがて復習":st.sec.title)+" クイズ", st.isReview?"💗":st.sec.emoji);
+  html += '<div class="progress-line"><span>問題 '+(st.pos+1)+' / '+st.questions.length+'</span><div class="progress-track"><i style="width:'+pct+'%"></i></div><span>正解 '+st.score+'</span></div>';
+  html += '<div class="quiz-card">';
+  html += '<div class="quiz-q">'+nl2br(q.q)+(q.table?'<pre>'+esc(q.table)+'</pre>':'')+'</div>';
+  html += '</div>';
+  html += '<div class="choices" id="choicesWrap">';
+  q.ch.forEach(function(c, i){
+    html += '<button class="choice" data-i="'+i+'"><span class="lbl">'+labels[i]+'</span><span>'+esc(c)+'</span></button>';
+  });
+  html += '</div>';
+  html += '<div id="explainWrap"></div>';
+  app.innerHTML = html;
+  bindTopbarBack();
+  app.querySelectorAll(".choice").forEach(function(btn){
+    btn.addEventListener("click", function(){ pickAnswer(parseInt(btn.getAttribute("data-i"),10)); });
+  });
+}
+function pickAnswer(i){
+  var st = view.qz;
+  if(st.answered) return;
+  st.answered = true; st.pickedIdx = i;
+  var q = st.questions[st.pos];
+  var correct = i === q.a;
+  if(correct){ st.score++; if(st.isReview) removeWeak(q.sid, q.key); }
+  else { addWeak({sid:q.sid, sname:q.sname, key:q.key, q:q.q, ch:q.ch, a:q.a, ex:q.ex, table:q.table}); }
+
+  document.querySelectorAll(".choice").forEach(function(btn, idx){
+    btn.disabled = true;
+    if(idx === q.a) btn.classList.add("correct");
+    else if(idx === i) btn.classList.add("wrong");
+    else btn.classList.add("dim");
+  });
+  var ex = document.getElementById("explainWrap");
+  ex.innerHTML = '<div class="explain">'
+    + '<div class="feedback '+(correct?"is-good":"is-bad")+'">'+(correct?"🌸 せいかい!":"💦 おしい、正解は "+String.fromCharCode(65+q.a))+'</div>'
+    + '<div>'+q.ex+'</div>'
+    + '</div>'
+    + '<button class="primary-btn" id="nextBtn" style="margin-top:14px;">'+(st.pos+1<st.questions.length?"つぎの問題へ":"けっかを見る")+'</button>';
+  document.getElementById("nextBtn").addEventListener("click", function(){ st.pos++; st.answered=false; st.pickedIdx=null; render(); });
+  ex.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+/* ---------- Review (にがて復習) ---------- */
+function startReviewQuiz(){
+  var items = weakList();
+  var qs = shuffle(items).map(function(w){ return {sid:w.sid, sname:w.sname, key:w.key, q:w.q, table:w.table, ch:w.ch, a:w.a, ex:w.ex}; });
+  startQuiz(null, qs);
+}
+function renderReview(){
+  var items = weakList();
+  var html = '<div class="topbar"><div class="emoji">💗</div><div class="titles"><h2>にがて復習</h2></div></div>';
+  if(!items.length){
+    html += '<div class="empty-state"><span class="big">🌷✨</span>にがてはまだないよ!<br>このままクイズをがんばろう</div>';
+    app.innerHTML = html;
+    return;
+  }
+  html += '<p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 14px;line-height:1.6;">クイズで間違えた問題があつまってるよ。正解すると自動でリストから消えていくよ。</p>';
+  html += '<button class="primary-btn" id="startReview" style="margin-bottom:18px;">💪 にがてクイズに挑戦する('+items.length+'問)</button>';
+  items.forEach(function(w, i){
+    html += '<div class="weak-item"><div class="n">'+(w.count>1?"×"+w.count:"!")+'</div><div class="txt"><div class="q">'+esc(w.q.slice(0,42))+(w.q.length>42?"…":"")+'</div><div class="m">'+esc(w.sname||"")+'</div></div></div>';
+  });
+  app.innerHTML = html;
+  document.getElementById("startReview").addEventListener("click", startReviewQuiz);
+}
+
+/* ---------- Records (きろく) ---------- */
+function renderRecords(){
+  var html = '<div class="topbar"><div class="emoji">📔</div><div class="titles"><h2>きろく</h2></div>'
+    + '<button class="back" id="resetBtn" title="記録をリセット" style="margin-left:auto;">⚙️</button></div>';
+  var totalMastered = 0, totalCards = 0;
+  SECTIONS.forEach(function(s){ totalMastered += masteredSet(s.id).length; totalCards += s.cards.length; });
+  html += '<div class="stat-row">'
+    + '<div class="stat-tile"><b>'+overallPct()+'%</b><span>ぜんたい進捗</span></div>'
+    + '<div class="stat-tile"><b>'+totalMastered+' / '+totalCards+'</b><span>覚えたカード</span></div>'
+    + '<div class="stat-tile"><b>'+weakList().length+'</b><span>にがて問題</span></div>'
+    + '</div>';
+  html += '<div class="block-title">📊 大問べつスコア</div>';
+  SECTIONS.forEach(function(sec){
+    var m = masteredSet(sec.id).length;
+    html += '<div class="rec-row"><div class="emoji">'+sec.emoji+'</div><div class="body"><div class="t">'+sec.title+' '+esc(sec.name)+'</div>'
+      + '<div class="meter"><i style="width:'+sectionProgressPct(sec)+'%"></i></div></div>'
+      + '<div class="num">'+sectionProgressPct(sec)+'%</div></div>';
+  });
+  app.innerHTML = html;
+  document.getElementById("resetBtn").addEventListener("click", showResetConfirm);
+}
+
+function showResetConfirm(){
+  var ov = document.createElement("div");
+  ov.className = "confirm-overlay";
+  ov.innerHTML = '<div class="confirm-box"><h3 style="font-size:16px;">記録をリセットする?</h3>'
+    + '<p>覚えたカード・スコア・にがてリストが全部消えるよ。もとには戻せません。</p>'
+    + '<div class="confirm-row"><button id="cancelReset">やめる</button><button class="danger" id="doReset">リセットする</button></div></div>';
+  document.body.appendChild(ov);
+  document.getElementById("cancelReset").addEventListener("click", function(){ ov.remove(); });
+  document.getElementById("doReset").addEventListener("click", function(){
+    store = {mastered:{}, best:{}, weak:{}};
+    saveStore();
+    ov.remove();
+    renderRecords();
+  });
+}
+
+/* ---------- Router ---------- */
+function render(){
+  bottomNav.querySelectorAll(".nav-btn").forEach(function(btn){
+    var t = btn.getAttribute("data-tab");
+    var active = (t==="home" && ["home","section","flashcard","quiz","result"].indexOf(view.screen)!==-1 && view.tab==="home")
+      || (t===view.tab);
+    btn.classList.toggle("active", t===view.tab);
+    var badge = btn.querySelector(".badge"); if(badge) badge.remove();
+    if(t==="review"){
+      var n = weakList().length;
+      if(n>0){ var b=document.createElement("span"); b.className="badge"; b.textContent=n>99?"99+":n; btn.style.position="relative"; btn.appendChild(b); }
+    }
+  });
+  window.scrollTo(0,0);
+  if(view.screen==="home") renderHome();
+  else if(view.screen==="section") renderSection();
+  else if(view.screen==="flashcard") renderFlashcard();
+  else if(view.screen==="quiz") renderQuiz();
+  else if(view.tab==="review") renderReview();
+  else if(view.tab==="records") renderRecords();
+}
+
+bottomNav.querySelectorAll(".nav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ setTab(btn.getAttribute("data-tab")); });
+});
+
+/* ---------- boot ---------- */
+function boot(data){
+  render();
+}
+if(window.claude && window.claude.hot){
+  window.claude.hot.ready ? window.claude.hot.ready(boot) : boot(window.claude.hot.data || {});
+} else {
+  boot({});
+}
+})();
+</script>
