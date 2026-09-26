@@ -82,7 +82,7 @@
 }
 *{box-sizing:border-box;}
 [hidden]{display:none!important;}
-html,body{height:100%;}
+html,body{min-height:100%;}
 body{
   margin:0;
   background:
@@ -96,14 +96,15 @@ body{
   padding-block:14px;
   display:flex;
   justify-content:center;
+  align-items:flex-start;
 }
 .app{
   width:100%;
   max-width:480px;
   display:flex;
   flex-direction:column;
-  min-height:calc(100% - 28px);
-  padding-bottom:78px;
+  min-height:calc(100vh - 28px);
+  padding-bottom:calc(96px + env(safe-area-inset-bottom, 0px));
   position:relative;
 }
 h1,h2,h3{font-family:"Mochiy Pop One","Zen Maru Gothic",sans-serif;font-weight:400;text-wrap:balance;margin:0;}
